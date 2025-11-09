@@ -1,21 +1,3 @@
-Below is a **clean, professional, Datathon-ready GitHub README.md** for your **Housing Price Prediction – Datathon 2025** project, with:
-
-✅ Clean structure
-✅ Screenshots sections
-✅ Setup guide
-✅ Tech stack
-✅ Features
-✅ Multi-page app documentation
-✅ Deployment instructions
-✅ File structure
-
-Copy–paste directly into your `README.md`.
-
----
-
-# ✅ **README.md (Full GitHub-Ready Version)**
-
-```md
 # 🏠 Housing Price Prediction – Datathon 2025  
 A multi-page Streamlit dashboard for **Exploratory Data Analysis**, **Correlation Study**, **Modeling**, **Feature Importance**, and **Price Prediction** based on housing, demographic, and economic factors.
 
