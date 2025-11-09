@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+
+# Virtualenv and pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Byte-compiled / optimized / DLL files
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Installer logs
+pip-log.txt
+
+# PyEnv
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.* 
+
+# VS Code
+.vscode/
+
+# IDEs
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Data (add or remove patterns as needed)
+data/raw/
+data/tmp/
+*.csv
+*.parquet
+
+# Other
+coverage.xml
+htmlcov/
