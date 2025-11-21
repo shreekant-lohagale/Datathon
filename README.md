@@ -1,89 +1,116 @@
-# 🏠 Housing Price Prediction – Datathon 2025  
-A multi-page Streamlit dashboard for **Exploratory Data Analysis**, **Correlation Study**, **Modeling**, **Feature Importance**, and **Price Prediction** based on housing, demographic, and economic factors.
+Here is your **updated, polished, production-ready README.md**, rewritten to match your **final working app.py**, your **Datathon 2025 dashboard**, and your **actual folder structure**.
 
-This project was built for **Datathon 2025** and provides a complete workflow from **data cleaning → EDA → modeling → predictions**, all inside a modern interactive web UI.
+I improved formatting, added clarity, ensured accuracy, and made it look clean + professional.
+
+---
+
+# 🏠 Housing Price Prediction – Datathon 2025
+
+An interactive, multi-page **Streamlit Dashboard** for:
+
+* 🧹 Data Cleaning
+* 📊 Exploratory Data Analysis
+* 🔗 Correlation Study
+* 🤖 Model Integration (coming soon)
+* 🔥 Price Prediction (single + batch)
+
+Built for **Datathon 2025**, this project provides a complete workflow from loading raw housing datasets to performing EDA and generating demo predictions — all with a clean, modern UI.
 
 ---
 
 ## 🚀 Features
 
-### ✅ 1. Multi-Page Streamlit Application  
-The app is divided into the following pages:
+### ✅ 1. Clean & Modern Multi-Page Streamlit App
 
-| Page | Description |
-|------|-------------|
-| **Home** | Overview of the project, navigation, theme loader |
-| **EDA** | Scatter plots, distributions, interactive visual exploration |
-| **Correlation Heatmap** | Correlation matrix to identify significant relationships |
-| **Model** | Train/evaluate ML models (placeholder for now) |
-| **Feature Importance** | Random Forest-based feature scoring |
-| **Prediction Tool** | Single & batch prediction demo (CSV supported) |
+Pages include:
+
+| Page                   | Function                                                |
+| ---------------------- | ------------------------------------------------------- |
+| **Home**               | Project intro, navigation, dark theme                   |
+| **EDA**                | Scatter plots & distributions (no statsmodels required) |
+| **Correlation Matrix** | Visual relationship mapping (optional)                  |
+| **Model Training**     | Placeholder for your ML models                          |
+| **Feature Importance** | Random Forest-based feature scoring                     |
+| **Prediction Tool**    | Single + batch prediction UI                            |
 
 ---
 
 ## 📂 Folder Structure
 
 ```
-
 Datathon/
 │
-├── app.py                      ← Main landing page
-├── styles.css                  ← Premium dark theme styling
-├── utils.py                    ← Shared loaders + cleaning utilities
+├── app.py                      ← Main app (merged & fixed)
+├── styles.css                  ← Dark theme + UI enhancements
+├── utils.py                    ← Shared preprocessing utilities
 │
-├── data/
+├── data/                       ← Place CSV files here
 │   ├── output_Pune_builderfloor.csv
 │   └── processed_data.csv
 │
-├── pages/
+├── pages/                      ← Modular Streamlit pages
 │   ├── 1_EDA.py
 │   ├── 2_Correlation.py
 │   ├── 3_Model.py
 │   ├── 4_Feature_Importance.py
 │   └── 5_Prediction_Tool.py
 │
+├── models/
+│   └── model.ipynb             ← Your ML notebook
+│
 └── README.md
-
-````
+```
 
 ---
 
 ## 💻 Tech Stack
 
-- **Python**
-- **Streamlit** (Multi-page app)
-- **Pandas / NumPy** (Data processing)
-- **Plotly** (Interactive charts)
-- **Scikit-Learn** (Modeling and feature importance)
-- **Custom CSS** (Dark premium UI)
-- **Narwhals-safe Plotly workflow** (Prevents duplicate-column errors)
+* **Python 3.10+**
+* **Streamlit** – Multi-page web UI
+* **Pandas & NumPy** – Data cleaning and processing
+* **Plotly** – Interactive charts (scatter, histograms, bar)
+* **Scikit-Learn** – Training + feature importance (future pages)
+* **Custom CSS** – Full dark-mode premium UI
+* **Narwhals-safe Plotly** (ensures no duplicate-column errors)
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Setup Instructions
 
-### ✅ 1. Clone the Repository
+### 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
-````
+```
 
-### ✅ 2. Create Virtual Environment
+### 2️⃣ Create Virtual Environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate      # Windows
 ```
 
-### ✅ 3. Install Dependencies
+Then activate:
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+**Mac/Linux**
+
+```bash
+source venv/bin/activate
+```
+
+### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### ✅ 4. Run the Application
+### 4️⃣ Run App
 
 ```bash
 streamlit run app.py
@@ -91,100 +118,82 @@ streamlit run app.py
 
 ---
 
-## 📊 Dataset
+## 📊 Dataset Overview
 
-The project uses **housing dataset from Pune (builder floors)** containing features like:
+This project uses real estate data from **Pune builder-floor housing**.
 
-* Location
-* Area
+### Raw Dataset
+
+`data/output_Pune_builderfloor.csv`
+
+### Processed Dataset
+
+`data/processed_data.csv`
+
+Key features include:
+
+* Area (sqft)
 * Price
-* Property age
-* Amenities
 * Locality score
 * Builder experience
-* Furnishing / facing details
-* Security deposit
+* Property age
+* Furnishing status
+* Facing direction
+* Total floors / floor number
 * Price negotiable
-* New/resale
-
-Processed dataset is stored inside:
-
-```
-/data/processed_data.csv
-```
-
-Raw dataset is stored inside:
-
-```
-/data/output_Pune_builderfloor.csv
-```
+* Security deposit
+* Amenities
 
 ---
 
 ## ✨ UI Highlights
 
-* Dark-mode premium theme
-* Glassmorphism sidebar
-* Animated transitions
-* Modern typography
-* Rounded cards & polished layout
-* Clean Plotly visualization blocks
+* 🌑 Full **dark mode** aesthetic
+* 🎛️ Clean card-based layouts
+* 📊 Modern Plotly visuals
+* 🔄 Smooth interactions
+* 🧼 Auto-sanitized CSV loading (duplicate columns fixed)
+* 📱 Responsive layout
 
 ---
 
-## 🔥 Screenshots (Optional)
+## 🔍 EDA Features
 
-Add your screenshots here:
-
-```
-![Homepage](screenshots/home.png)
-![EDA](screenshots/eda.png)
-![Correlation](screenshots/correlation.png)
-![Prediction Tool](screenshots/predict.png)
-```
+* Scatter plots
+* Bar plots (for categorical X)
+* Histograms
+* Auto-cleaned columns
+* No dependency on `statsmodels`
 
 ---
 
-## ✅ Model (Coming Soon)
-
-* Linear Regression
-* Random Forest
-* Gradient Boosting
-* Hyperparameter tuning
-* RMSE / MAE / R² evaluation
-
----
-
-## 🧮 Prediction Tool
+## 🤖 Prediction Tool (Demo)
 
 Supports:
 
-✅ Single prediction → Users input area, locality score, builder experience
-✅ Batch predictions → Upload a CSV
+### ✔ Single Prediction
 
-Outputs predicted price:
+Input:
+
+* Area (sqft)
+* Locality score (0–10)
+* Builder experience (years)
+
+Outputs an estimated price:
 
 ```
-₹ XX,XX,XXX
+₹ 12,34,567
 ```
 
----
+### ✔ Batch Prediction
 
-## 🚀 Deployment
+Upload a CSV with the required fields.
+App automatically detects:
 
-### Deploy on Streamlit Cloud
+* `area`
+* `locality_score`
+* `builder_experience`
 
-1. Push project to GitHub
-2. Go to: [https://share.streamlit.io](https://share.streamlit.io)
-3. Connect repository
-4. Set **main file** = `app.py`
-5. Deploy
-
-OR deploy on:
-
-* **Render**
-* **Railway**
-* **Vercel (Streamlit WASM)**
+Outputs a downloadable prediction CSV.
 
 ---
-
