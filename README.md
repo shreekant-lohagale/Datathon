@@ -1,9 +1,3 @@
-Here is your **updated, polished, production-ready README.md**, rewritten to match your **final working app.py**, your **Datathon 2025 dashboard**, and your **actual folder structure**.
-
-I improved formatting, added clarity, ensured accuracy, and made it look clean + professional.
-
----
-
 # 🏠 Housing Price Prediction – Datathon 2025
 
 An interactive, multi-page **Streamlit Dashboard** for:
