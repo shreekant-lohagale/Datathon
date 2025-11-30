@@ -1,11 +1,9 @@
-# ==============================
-# FINAL PRODUCTION APP.PY
-# Housing Price Explorer – Datathon 2025
-# Fully redesigned premium UI theme
-# ==============================
+# ============================
+#  FINAL WORKING STREAMLIT APP
+# ============================
 
 import os
-os.environ["PLOTLY_NARWHALS_ENABLED"] = "0"  # Disable issue-causing narwhals mode
+os.environ["PLOTLY_NARWHALS_ENABLED"] = "0"
 
 import streamlit as st
 import pandas as pd
@@ -14,202 +12,198 @@ import plotly.express as px
 from pathlib import Path
 
 
-# ----------------------------------------------------------
-# PAGE CONFIG + THEME
-# ----------------------------------------------------------
-st.set_page_config(
-    page_title="🏠 Housing Price Explorer",
-    page_icon="🏠",
-    layout="wide"
-)
-
-# Custom CSS Theme
+# ============================
+#  --- PROFESSIONAL UI THEME ---
+# ============================
 st.markdown("""
 <style>
 
-body {
-    background-color: #0d1117;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+html, body, [class*="css"]  {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #0a0f1f, #05070d);
+    color: #E8E8E8 !important;
 }
 
-[data-testid="stAppViewContainer"] {
-    background-color: #0d1117;
-    color: #e6edf3;
+section.main > div { 
+    padding-top: 1rem;
 }
 
-/* Card-like sections */
-.block-container {
-    padding-top: 2rem;
+div.block-container {
+    background: rgba(255,255,255,0.03);
+    padding: 2rem 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
 }
 
-section {
-    background: #161b22;
-    padding: 1.5rem;
-    border-radius: 14px;
-    border: 1px solid #30363d;
-    margin-bottom: 1.5rem;
+h1, h2, h3, h4 {
+    color: #38bdf8;
+    font-weight: 600;
 }
 
-/* Titles */
-h1, h2, h3 {
-    color: #e6edf3 !important;
-    font-weight: 700;
-}
-
-/* Metric boxes */
-.metric-box {
-    background: #21262d;
-    padding: 12px;
+.stButton > button {
+    background: linear-gradient(135deg,#38bdf8,#0ea5e9);
+    color: white;
     border-radius: 12px;
-    border: 1px solid #30363d;
-    text-align: center;
+    padding: 10px 22px;
+    border: none;
+    font-size: 16px;
+}
+.stButton > button:hover {
+    background: linear-gradient(135deg,#7dd3fc,#38bdf8);
+}
+
+.stTabs [data-baseweb="tab"] {
+    font-size: 17px;
+    padding: 10px 18px;
+}
+
+.dataframe tbody tr {
+    background: rgba(255,255,255,0.02) !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# ----------------------------------------------------------
-# HELPERS
-# ----------------------------------------------------------
+# ============================
+# PAGE CONFIG
+# ============================
+st.set_page_config(
+    page_title="🏠 Housing Price Explorer",
+    page_icon="🏠",
+    layout="wide"
+)
+
+st.title("🏠 Housing Price Explorer – Datathon 2025")
+st.caption("Modern UI • Clean EDA • Ready for Model Integration")
+
+
+# ============================
+#  HELPERS
+# ============================
 DATA_DIR = Path("data")
 
+
 def make_unique_columns(cols):
-    """Ensure column names are unique (col, col.1, col.2...)."""
     seen = {}
-    new_cols = []
+    out = []
     for c in cols:
         base = str(c).strip()
         count = seen.get(base, 0)
         name = base if count == 0 else f"{base}.{count}"
-        while name in new_cols:
+        while name in out:
             count += 1
             name = f"{base}.{count}"
         seen[base] = count + 1
-        new_cols.append(name)
-    return new_cols
+        out.append(name)
+    return out
 
 
-def sanitize_df(df):
-    """Clean columns, convert numeric strings, fix duplicates."""
+def sanitize_dataframe(df: pd.DataFrame):
     df = df.copy()
-    df.columns = [str(c).lower().strip() for c in df.columns]
+    df.columns = [str(c).strip().lower() for c in df.columns]
     df.columns = make_unique_columns(df.columns)
 
     for c in df.columns:
         if df[c].dtype == object:
             try:
-                df[c] = df[c].str.replace(",", "")
+                df[c] = df[c].str.replace(",", "", regex=False)
+            except:
+                pass
+            try:
                 df[c] = pd.to_numeric(df[c], errors="ignore")
             except:
                 pass
+
     return df
 
 
-def load_csv(filename):
-    """Load CSV if exists safely."""
-    f = DATA_DIR / filename
-    if not f.exists():
+def load_csv_safely(filename: str):
+    p = DATA_DIR / filename
+    if not p.exists():
         return None
-    df = pd.read_csv(f)
-    return sanitize_df(df)
+
+    try:
+        df = pd.read_csv(p)
+        df.columns = make_unique_columns(df.columns)
+        df = sanitize_dataframe(df)
+        return df
+
+    except Exception as e:
+        st.warning(f"Failed to load {filename}: {e}")
+        return None
 
 
-# ----------------------------------------------------------
+# ============================
 # LOAD DATA
-# ----------------------------------------------------------
-raw_df = load_csv("output_Pune_builderfloor.csv")
-proc_df = load_csv("processed_data.csv")
+# ============================
+raw_df = load_csv_safely("output_Pune_builderfloor.csv")
+proc_df = load_csv_safely("processed_data.csv")
 
 
-# ----------------------------------------------------------
-# HEADER
-# ----------------------------------------------------------
-st.title("🏠 Housing Price Explorer – Datathon 2025")
-st.caption("A clean UI to preview data, explore EDA, and try demo predictions.")
-
-
-# ----------------------------------------------------------
+# ============================
 # TABS
-# ----------------------------------------------------------
-tab1, tab2, tab3 = st.tabs(["📂 Data", "📊 EDA", "🤖 Predict"])
+# ============================
+tab1, tab2, tab3 = st.tabs(["📁 Data", "📊 EDA", "🤖 Predict"])
 
-
-# ==========================================================
-# 📂 TAB 1 — DATA
-# ==========================================================
+# ----------------------------
+# TAB 1 — DATA PREVIEW
+# ----------------------------
 with tab1:
-    st.subheader("Available Datasets")
+    st.subheader("📁 Available Datasets")
 
     col1, col2 = st.columns(2)
 
-    # RAW DATA
     with col1:
-        st.markdown("### 🟦 output_Pune_builderfloor.csv")
+        st.markdown("### output_Pune_builderfloor.csv")
         if raw_df is not None:
-            st.markdown(f"<div class='metric-box'>Rows: {raw_df.shape[0]} | Columns: {raw_df.shape[1]}</div>", unsafe_allow_html=True)
+            st.write("Shape:", raw_df.shape)
             st.dataframe(raw_df.head(), use_container_width=True)
-
-            with st.expander("Describe"):
-                st.write(raw_df.describe(include="all").transpose())
-
-            with st.expander("Columns"):
-                st.write(list(raw_df.columns))
-
         else:
-            st.warning("File not found in /data folder.")
+            st.info("File missing.")
 
-    # PROCESSED DATA
     with col2:
-        st.markdown("### 🟩 processed_data.csv")
+        st.markdown("### processed_data.csv")
         if proc_df is not None:
-            st.markdown(f"<div class='metric-box'>Rows: {proc_df.shape[0]} | Columns: {proc_df.shape[1]}</div>", unsafe_allow_html=True)
+            st.write("Shape:", proc_df.shape)
             st.dataframe(proc_df.head(), use_container_width=True)
-
-            with st.expander("Describe"):
-                st.write(proc_df.describe(include="all").transpose())
-
-            with st.expander("Columns"):
-                st.write(list(proc_df.columns))
-
         else:
-            st.warning("File not found in /data folder.")
+            st.info("File missing.")
 
 
-
-# ==========================================================
-# 📊 TAB 2 — EDA
-# ==========================================================
+# ----------------------------
+# TAB 2 — EDA
+# ----------------------------
 with tab2:
-    st.subheader("Quick Visual EDA")
+    st.subheader("📊 Quick Visuals (Auto-cleaned data)")
 
     df = proc_df if proc_df is not None else raw_df
 
     if df is None:
-        st.info("Upload datasets into /data folder to begin.")
+        st.info("Upload CSV files into /data folder.")
     else:
-        df = sanitize_df(df)
+        df = sanitize_dataframe(df)
 
         num_cols = df.select_dtypes(include=np.number).columns.tolist()
         all_cols = df.columns.tolist()
 
         c1, c2, c3 = st.columns(3)
-
         with c1:
             x_col = st.selectbox("X-axis", all_cols)
-
         with c2:
-            y_col = st.selectbox("Y-axis (numeric)", num_cols)
-
+            y_col = st.selectbox("Y-axis (numeric)", [c for c in num_cols if c != x_col])
         with c3:
-            color = st.selectbox("Color", [None] + all_cols)
+            color = st.selectbox("Color Group", [None] + all_cols)
 
-        # Plot
         try:
             if x_col in num_cols:
                 fig = px.scatter(df, x=x_col, y=y_col, color=color)
             else:
                 agg = df.groupby(x_col)[y_col].mean().reset_index()
-                fig = px.bar(agg, x=x_col, y=y_col, color=color)
+                fig = px.bar(agg, x=x_col, y=y_col)
 
             st.plotly_chart(fig, use_container_width=True)
 
@@ -217,75 +211,55 @@ with tab2:
             st.error(f"Plot error: {e}")
 
         st.divider()
-
-        # Distribution
         dist_col = st.selectbox("Distribution Column", num_cols)
-        try:
-            fig2 = px.histogram(df, x=dist_col, nbins=40)
-            st.plotly_chart(fig2, use_container_width=True)
-        except:
-            st.error("Histogram error.")
+
+        fig2 = px.histogram(df, x=dist_col, nbins=40)
+        st.plotly_chart(fig2, use_container_width=True)
 
 
-
-# ==========================================================
-# 🤖 TAB 3 — PREDICT
-# ==========================================================
+# ----------------------------
+# TAB 3 — DEMO PREDICTION
+# ----------------------------
 with tab3:
-    st.subheader("Demo Price Prediction")
+    st.subheader("🤖 Predict House Price (Demo Model)")
 
     cA, cB, cC = st.columns(3)
-
     area = cA.number_input("Area (sq ft)", value=1000.0)
-    loc = cB.number_input("Locality Score (0–10)", value=6.5)
-    exp = cC.number_input("Builder Experience (years)", value=5.0)
+    locality = cB.number_input("Locality Score (0–10)", value=5.0)
+    builder = cC.number_input("Builder Experience (years)", value=5.0)
 
     if st.button("Predict Price"):
         price = (
             3000 * area +
-            100000 * (loc / 10) +
-            20000 * np.log1p(exp)
+            100000 * (locality / 10) +
+            20000 * np.log1p(builder)
         )
         st.success(f"Estimated Price: ₹ {price:,.0f}")
 
     st.divider()
+    st.write("### Batch CSV Prediction")
 
-    st.write("### Batch Prediction (CSV Upload)")
-    file = st.file_uploader("Upload CSV", type=["csv"])
-
-    if file:
+    up = st.file_uploader("Upload CSV", type=["csv"])
+    if up:
         try:
-            dfu = pd.read_csv(file)
-            dfu = sanitize_df(dfu)
+            df2 = pd.read_csv(up)
+            df2 = sanitize_dataframe(df2)
 
-            st.write("Preview:", dfu.head())
+            st.write("Preview:", df2.head())
 
-            # Column mapping
-            def find(df, keys):
-                for k in keys:
-                    if k in df.columns:
-                        return k
-                return None
+            df2["pred_price"] = (
+                3000 * df2.iloc[:, 0].astype(float) +
+                100000 * (df2.iloc[:, 1].astype(float) / 10) +
+                20000 * np.log1p(df2.iloc[:, 2].astype(float))
+            )
 
-            colA = find(dfu, ["area", "sqft", "sq_ft"])
-            colL = find(dfu, ["locality_score", "locality"])
-            colE = find(dfu, ["builder_experience", "experience"])
-
-            if not (colA and colL and colE):
-                st.error("CSV missing required columns.")
-            else:
-                dfu["pred_price_demo"] = (
-                    3000 * dfu[colA].astype(float) +
-                    100000 * (dfu[colL].astype(float) / 10) +
-                    20000 * np.log1p(dfu[colE].astype(float))
-                )
-
-                st.download_button(
-                    "Download Predictions",
-                    dfu.to_csv(index=False).encode(),
-                    "predictions.csv",
-                    "text/csv"
-                )
+            st.download_button(
+                "Download Predictions",
+                df2.to_csv(index=False).encode(),
+                "predictions.csv",
+                "text/csv"
+            )
 
         except Exception as e:
             st.error(f"Error: {e}")
+
